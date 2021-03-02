@@ -1,6 +1,4 @@
-
-{{--созданая страница под названием home--}}
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-
-<h1>hello world</h1>
-{{$res}}
-{{$name}}
-<br>
-{{ route('admin.posts',['id'=>3]) }}
-<br>
-{{ route('posts',['id'=>3]) }}
+<h1>test page</h1>
+{{$test_text}}
 </body>
 </html>

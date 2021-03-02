@@ -35,6 +35,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Route::pattern('id','[0-9]+');//глобальное выражение для id
+        Route::pattern('slug','[0-9a-zA-Z-]+');//глобальное выражение для slug
+
+
         $this->configureRateLimiting();
 
         $this->routes(function () {

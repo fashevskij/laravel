@@ -1,22 +1,13 @@
-
-{{--созданая страница под названием home--}}
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>404</title>
 </head>
 <body>
-
-<h1>hello world</h1>
-{{$res}}
-{{$name}}
-<br>
-{{ route('admin.posts',['id'=>3]) }}
-<br>
-{{ route('posts',['id'=>3]) }}
+<h1>404 {{$exception->getMessage()}}</h1>
 </body>
 </html>
