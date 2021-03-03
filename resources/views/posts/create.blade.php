@@ -1,6 +1,4 @@
-
-{{--созданая страница под названием home--}}
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +8,13 @@
     <title>Document</title>
 </head>
 <body>
+{{--{{ route('posts.store') }} название маршрута см. документацию--}}
+<form action="{{ route('posts.store') }}" method="post">
+    @csrf
 
-<h1>hello world</h1>
-{{$res}}
-{{$sum}}
-{{$name}}
+    <input type="text" name="title">
+    <button type="submit">send</button>
 
+</form>
 </body>
 </html>

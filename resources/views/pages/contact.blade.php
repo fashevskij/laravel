@@ -1,6 +1,4 @@
-
-{{--созданая страница под названием home--}}
-    <!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,11 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-
-<h1>hello world</h1>
-{{$res}}
-{{$sum}}
-{{$name}}
-
+<h1> contact pages</h1>
 </body>
 </html>
