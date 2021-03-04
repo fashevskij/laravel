@@ -5,22 +5,42 @@ namespace App\Http\Controllers;
 //Создаем новый контроллер HomeController наследуемый от Controller
 
 
+use Illuminate\Support\Facades\DB;
+
 class HomeController extends Controller
 {
     public function index()
-    {
-        //ТЕСТ КОНФИГУРАЦИЙ
-        dump($_ENV);//вывод массива c переменными среды
-        dump(env('DB_USERNAME'));//вывод массива c переменными среды
-        dump($_ENV['DB_USERNAME']);//вывод конкретного поля настроей из массива по ключу
-        dump(config('app.timezone'));//конфиг так же функция хелпер и получаем конфиги из конфигов
-        //а так же возможность изменить их
-        dump(config('database.connections.mysql.database'));
-        return view('home', ['res' => '3', 'sum' => '5', 'name' => 'Anna']);//возврат представления home с передаными параметрамиp
-    }
+    {   //добавление в базу данны
+       /* $query = DB::insert("INSERT INTO posts (title, content)
+            VALUES (:title, :content)", ['title'=>'Blog 3', 'content'=>'Blog content 3']);
+        var_dump($query);
 
-    public function test()
-    {
-        return __METHOD__;
+        //обновление базы данны вывод количество обновлений
+        dump( DB::update("UPDATE posts SET title = :title WHERE title = 'Blogs 5' ", ['title'=>'blogs 3']));
+        */
+        //удаление с базы данных где айди равно 4
+       /*DB::delete("DELETE FROM posts WHERE id=?",[4]);*/
+
+        //отлов ошибок
+        DB::beginTransaction();//запускаем метод транзкции
+        try {
+            DB::update("UPDATE posts SET created_at = ? WHERE created_at = NULL ", [NOW()]);
+            DB::update("UPDATE posts SET updated_at = ? WHERE updated_at = NULL ", [NOW()]);
+            DB::commit();//выполняем запрос если все обновления выше прошли успешно
+        }catch (\Exception $e){
+            //если не прошло успешно
+            DB::rollBack();//откатываем назад изменения
+            echo $e->getMessage();//выводим ошибку
+        }
+
+
+
+
+
+       //вывод данных из базы
+        $posts = DB::select("SELECT * FROM posts WHERE id > :id", ['id'=> 3]);
+        return $posts;
+
     }
 }
+

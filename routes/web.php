@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 //для подключение контроллеров!!
 use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index']);// в роуте указывам метод/урл/[имя класса, и его метод]
-Route::get('/test', [HomeController::class, 'test']);//
+
 
 use App\Http\Controllers\PageController;
 Route::get('/page/{slug}', [PageController::class, 'show']);
