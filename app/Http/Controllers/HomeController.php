@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 //Создаем новый контроллер HomeController наследуемый от Controller
 
 
+use App\Models\City;
+use App\Models\Country;
+use App\Models\Post;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -64,10 +67,57 @@ class HomeController extends Controller
         //distinct() - показывает только уникальные записи в выбраной колонке
         //$data=DB::table('city')->select('CountryCode')->distinct()->get();
 
-        /*соеденение таблиц*/
+        /*соеденение таблиц
         $data=DB::table('city')->select('city.ID','city.Name as city_name','country.Code', 'country.Name as country_name')->limit(10)
             ->join('country','city.CountryCode','=', 'country.Code')->orderBy('city.id')->get();
-        dd($data);
+        dd($data);*/
+    /*
+        //оздали обьект нашей модели пост
+        $post = new Post();
+        //заносим данные в базу данных
+        $post->title = 'статья 1';
+        //$post->content = 'контент статьи 1';
+        $post->save();//сохраняем в бд*/
+
+
+        /*работа с моделью */
+
+        //$data = Country::query()->get();//получаем все записи через модель созданую для таблицы country
+        //$data = Country::query()->limit(5)->get();
+        //$data = City::query()->find('4');//выбор по айди в таблице
+        //$data = Country::query()->find('AGO');
+        //dd($data);
+
+        /*Добавление в таблицу*/
+        //первый вариант добавление
+        /*$post = new Post();
+        $post->title = 'статья 2';
+        $post->content = 'контент статьи 2';
+        $post->save();*/
+
+        //второй вариант добавления
+        //Post::query()->create(['title'=>'пост 5', 'content'=>'контент поста 5']);
+
+        //третий вариант добавления в базу данных (например когда данные прилетают из формы)
+        /*
+        $post = new Post();
+        $post -> fill(['title'=>'пост 9', 'content'=>'контент поста 9']);
+        $post -> save();*/
+
+        /*Обновление данных в таблице*/
+        //получаем запись
+        /*$post = Post::query()->find('4');
+        $post->update(['content'=>'anna']);
+        $post->save();*/
+
+        //меняем массово несколько записей
+        //Post::query()->where('id','<','4')->update(['content'=>'test mass update']);
+
+        //удаление данных
+        /*$post = Post::query()->find('5');
+        $post->delete();*/
+        //или так удаляем 3 записи по айди
+        //Post::destroy('4','2','1');
     }
 }
 
