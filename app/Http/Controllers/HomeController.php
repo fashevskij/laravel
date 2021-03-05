@@ -10,37 +10,64 @@ use Illuminate\Support\Facades\DB;
 class HomeController extends Controller
 {
     public function index()
-    {   //добавление в базу данны
-       /* $query = DB::insert("INSERT INTO posts (title, content)
-            VALUES (:title, :content)", ['title'=>'Blog 3', 'content'=>'Blog content 3']);
-        var_dump($query);
+    {
+        //получение данных из базы через конструктор запросов
+        //$data = DB::table('country')->get();
 
-        //обновление базы данны вывод количество обновлений
-        dump( DB::update("UPDATE posts SET title = :title WHERE title = 'Blogs 5' ", ['title'=>'blogs 3']));
-        */
-        //удаление с базы данных где айди равно 4
-       /*DB::delete("DELETE FROM posts WHERE id=?",[4]);*/
+        //получение данных из базы с лимитом ограничения первые 5 стран
+        //$data = DB::table('country')->limit(5)->get();
 
-        //отлов ошибок
-        DB::beginTransaction();//запускаем метод транзкции
-        try {
-            DB::update("UPDATE posts SET created_at = ? WHERE created_at = NULL ", [NOW()]);
-            DB::update("UPDATE posts SET updated_at = ? WHERE updated_at = NULL ", [NOW()]);
-            DB::commit();//выполняем запрос если все обновления выше прошли успешно
-        }catch (\Exception $e){
-            //если не прошло успешно
-            DB::rollBack();//откатываем назад изменения
-            echo $e->getMessage();//выводим ошибку
-        }
+        //получение данных из базы определенных колонок 'Code','Name с лимитом 5 записей
+        //$data = DB::table('country')->select('Code','Name')->limit(5)->get();
+
+        //получаем первый елемент из базы данных выводим только 'Code','Name'
+        //$data = DB::table('country')->select('Code','Name')->first();
+
+        //ссортировка получаем последнюю запись из базы днных
+        //orderBy('Code', 'desc') -ссортировка первый арг колонка , второй параметр ссортировки в данном случае с конца
+
+        //получаем одну запись по id find - ищит по первичному ключу и получаем обьект с нужными параметрами так как первичный ключ может быть только 1
+        //$data = DB::table('city')->select('Id','Name')->find('5');
+
+        //Условия where получаем поле id , name где id = 5 и получаем многоменрый массив так как записей может быть много
+        //$data = DB::table('city')->select('id','name')->where('id','=', 5)->get();
+
+        //комбинация условий where в виде многомерного массива
+        /*$data = DB::table('city')->select('id','name')->where([
+            ['id','>','1'],['id','<','6']
+        ])->get();*/
+
+        //получаем из таблицы городов где ид < 5 получаем первое совпадение по условию выводим name
+        //$data = DB::table('city')->where('id','<','5')->value('Name');
+
+        //получаем из таблицы стран с лимитом 5 первые 5 стар 'name','code'
+        //$data = DB::table('country')->limit('5')->pluck('name','code');
 
 
+        /*Агригатные функции!!*/
+        //получаем количество записей в таблице
+        //$data = DB::table('country')->count();
+
+        //получаем максимальное значение из таблицы country в поле population
+        //$data = DB::table('country')->max('population');
+
+        //получаем минимальное значение из таблицы country в поле population
+        //$data = DB::table('country')->min('population');
+
+        //получаем сумму всех цифр в колонке population
+        //$data = DB::table('country')->sum('population');
+
+        //получаем среднее значение всех цифр population
+        //$data = DB::table('country')->avg('population');
 
 
+        //distinct() - показывает только уникальные записи в выбраной колонке
+        //$data=DB::table('city')->select('CountryCode')->distinct()->get();
 
-       //вывод данных из базы
-        $posts = DB::select("SELECT * FROM posts WHERE id > :id", ['id'=> 3]);
-        return $posts;
-
+        /*соеденение таблиц*/
+        $data=DB::table('city')->select('city.ID','city.Name as city_name','country.Code', 'country.Name as country_name')->limit(10)
+            ->join('country','city.CountryCode','=', 'country.Code')->orderBy('city.id')->get();
+        dd($data);
     }
 }
 

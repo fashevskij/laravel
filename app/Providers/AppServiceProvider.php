@@ -23,10 +23,11 @@ class AppServiceProvider extends ServiceProvider
      * @return void
      */
     public function boot()
-    {   //для просмотра запросов
-        /*
+    {
+
+        //для просмотра запросов (что его формирует)
        DB::listen(function ($query){
-           dump($query->sql, $query->bindings);
-       });*/
+           dump($query->sql);
+       });
     }
 }
