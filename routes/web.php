@@ -15,17 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 //для подключение контроллеров!!
 use App\Http\Controllers\HomeController;
-Route::get('/', [HomeController::class, 'index']);// в роуте указывам метод/урл/[имя класса, и его метод]
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 use App\Http\Controllers\PageController;
-Route::get('/page/{slug}', [PageController::class, 'show']);
+Route::get('/about',[PageController::class, 'show'])->name('page.about');
 
-use App\Http\Controllers\Test\TestController;
-Route::get('/show_test',[TestController::class, 'showTest']);
 
 use App\Http\Controllers\PostController;
-//
 Route::resource('/posts', PostController::class)->parameters([
     'posts' => 'id'
 ]);

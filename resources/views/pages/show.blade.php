@@ -8,6 +8,6 @@
     <title>Document</title>
 </head>
 <body>
-<h1>{{$name_pages}} pages</h1>
+<h1> pages</h1>
 </body>
 </html>
