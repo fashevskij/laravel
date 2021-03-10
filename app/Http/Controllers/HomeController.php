@@ -8,6 +8,8 @@ namespace App\Http\Controllers;
 use App\Models\City;
 use App\Models\Country;
 use App\Models\Post;
+use App\Models\Rubric;
+use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -47,7 +49,7 @@ class HomeController extends Controller
         //$data = DB::table('country')->limit('5')->pluck('name','code');
 
 
-        /*Агригатные функции!!*/
+        /**Агригатные функции!!*/
         //получаем количество записей в таблице
         //$data = DB::table('country')->count();
 
@@ -67,7 +69,7 @@ class HomeController extends Controller
         //distinct() - показывает только уникальные записи в выбраной колонке
         //$data=DB::table('city')->select('CountryCode')->distinct()->get();
 
-        /*соеденение таблиц
+        /**соеденение таблиц
         $data=DB::table('city')->select('city.ID','city.Name as city_name','country.Code', 'country.Name as country_name')->limit(10)
             ->join('country','city.CountryCode','=', 'country.Code')->orderBy('city.id')->get();
         dd($data);*/
@@ -80,7 +82,7 @@ class HomeController extends Controller
         $post->save();//сохраняем в бд*/
 
 
-        /*работа с моделью */
+        /**работа с моделью */
 
         //$data = Country::query()->get();//получаем все записи через модель созданую для таблицы country
         //$data = Country::query()->limit(5)->get();
@@ -88,14 +90,14 @@ class HomeController extends Controller
         //$data = Country::query()->find('AGO');
         //dd($data);
 
-        /*Добавление в таблицу*/
+        /**Добавление в таблицу*/
         //первый вариант добавление
         /*$post = new Post();
         $post->title = 'статья 2';
         $post->content = 'контент статьи 2';
         $post->save();*/
 
-        //второй вариант добавления
+        /**второй вариант добавления*/
         //Post::query()->create(['title'=>'пост 5', 'content'=>'контент поста 5']);
 
         //третий вариант добавления в базу данных (например когда данные прилетают из формы)
@@ -104,7 +106,7 @@ class HomeController extends Controller
         $post -> fill(['title'=>'пост 9', 'content'=>'контент поста 9']);
         $post -> save();*/
 
-        /*Обновление данных в таблице*/
+        /****Обновление данных в таблице***/
         //получаем запись
         /*$post = Post::query()->find('4');
         $post->update(['content'=>'anna']);
@@ -118,6 +120,64 @@ class HomeController extends Controller
         $post->delete();*/
         //или так удаляем 3 записи по айди
         //Post::destroy('4','2','1');
+
+        /**работаем с связаными таблицами пост и рубрик
+         эта связь 1 к 1 предпологает что только одно поле в таблице будет связано только
+         * с одним полем в другой
+         */
+        //получаем все данные пост по id
+       // $post = Post::query()->find('2');
+       //дальше можно плучить все данные рубрики поста с id = 2
+       //таким образом можно обращаться к одной таблице через другую через связаное поле rubric_id
+        // данном примере через таблицу пост к таблице рубрик
+       // dump($post->rubric->title);
+
+        //и наоборот через таблицу рубрик могу получить данные таблицы пост
+        //$rubric = Rubric::query()->find('3');
+        ///dump($rubric->post->title);
+
+        /**
+        Эта свзять многие к одному или наоборот
+         */
+
+        //$rubric = Rubric::query()->find('2');
+        //dump($rubric->posts);
+        //$post = Post::query()->find('3');
+        //dump($post->rubric->title);
+
+        //короткая запись получаения постов!!!!!!!!
+        //$posts = Rubric::query()->find('2')->posts;
+        //dump($posts);
+
+        /**Получение постов с помощью цикла*/
+
+        //например получим тайтлы всех постов id который больше 1
+        //with('rubric') - связываем сразу таблицу пост с виртуальным своиством рубрик (жадная загрузка!!
+        //$posts = Post::query()->with('rubric')->where('id','>','1')->get();
+        //с помощью цикла получаем каждый пост
+        //foreach ($posts as $post) {
+            //выводим тайтлы каждого полученгого поста,  так же выводим через связь тайтлый из таблицы рубрик привязаных к этим постам
+           // dump($post->title, $post->rubric->title);
+       // }
+
+        /**Связь многие ко многим!!!*/
+        //связываються 2 таблицы по средством третей
+        //получаем пост с айди 1
+        //$post = Post::query()->find('2');
+        //выводим его
+        //dump($post->title);
+        //прогоняем циклом через виртуальное своийство в модели пост (tags)
+        //foreach ($post->tags as $tag) {
+            //выводим тайтлы тегов в таблицы тег связаные с постом через таблицу пост_таг
+            //dump($tag->title);
+        //}
+
+        //аналогично для получения тегов
+        //$tag = Tag::query()->find(2);
+        //dump($tag->title);
+        //foreach ($tag->posts as $post) {
+            //dump($post->title);
+        //}
     }
 }
 
