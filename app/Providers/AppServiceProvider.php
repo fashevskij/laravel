@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
 
         //для просмотра запросов (что его формирует)
        DB::listen(function ($query){
-           dump($query->sql);
+          // dump($query->sql);
        });
     }
 }

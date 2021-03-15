@@ -16,13 +16,10 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $data1 = range(1,22);
-        $data2 = ['title'=>'TITLE',
-            'content'=>'CONTENT',
-            'keys'=>'KEYS'];
+        $posts = Post::query()->orderBy('id','desc')->get();//получаем посты в обратном порядке
         $title = 'home page';
         $h1 = "home";
-       return view('home',compact('title','h1','data1','data2'));
+       return view('home',compact('title','posts'));
     }
 }
 
