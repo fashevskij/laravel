@@ -16,15 +16,13 @@ use Illuminate\Support\Facades\Route;
 //для подключение контроллеров!!
 use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/create',[HomeController::class, 'create'])->name('posts.create');
+Route::post('/store',[HomeController::class, 'store'])->name('posts.store');
 
 use App\Http\Controllers\PageController;
 Route::get('/about',[PageController::class, 'show'])->name('page.about');
 
 
-use App\Http\Controllers\PostController;
-Route::resource('/posts', PostController::class)->parameters([
-    'posts' => 'id'
-]);
 
 
 

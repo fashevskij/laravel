@@ -28,6 +28,8 @@ class Post extends Model
 
     /**Связываем таблицу пост с таблицей рубрик*/
     //данная запись работает как 1к1 и 1 к многим
+
+    protected  $fillable = ['title','content','rubric_id'];
    public function rubric() {
         return $this->belongsTo(Rubric::class);
     }
