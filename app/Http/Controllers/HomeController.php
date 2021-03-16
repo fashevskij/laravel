@@ -16,8 +16,34 @@ use Illuminate\Support\Facades\Validator;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+   /*   ****СЕССИИ*****
+     //запись в сессию ключ значение
+        session()->put('test','test text');
+        session(['card'=>[
+        ['id'=>'1','title'=>'prod 1'],
+        ['id'=>'2','title'=>'prod 2']
+    ]]);
+        //обращаемся к сесси и выводим значение
+        dump(session('test'));
+        dump(session('card')[1]['title']);
+
+
+        //добавляем в массив кард в сессию новый продукт
+        //$request->session()->push('card',['id'=>'3','title'=>'prod 3']);
+
+        //удаление данных из сесии
+        //dump(session()->pull('test'));//вырезал , распечатал удалил
+        //$request->session()->forget('test');//удаление из сесии
+
+        //полная очистка сессии
+        //$request->session()->flush();
+        */
+
+        dump(session()->all());
+
         $posts = Post::query()->orderBy('id','desc')->get();//получаем посты в обратном порядке
         $title = 'home page';
        return view('home',compact('title','posts'));
@@ -61,6 +87,9 @@ class HomeController extends Controller
         ];
 
         $validator = Validator::make($request->all(),$rules, $messages)->validate();*/
+
+        //флеш сообщения в сессии которые показываютсья только один раз
+        session()->flash('flash text','данные сохранены!');
 
         Post::query()->create($request->all());
         return redirect()->route('home');
