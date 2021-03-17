@@ -11,6 +11,9 @@ use App\Models\Post;
 use App\Models\Rubric;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,33 +22,38 @@ class HomeController extends Controller
     public function index(Request $request)
     {
 
-   /*   ****СЕССИИ*****
-     //запись в сессию ключ значение
-        session()->put('test','test text');
-        session(['card'=>[
-        ['id'=>'1','title'=>'prod 1'],
-        ['id'=>'2','title'=>'prod 2']
-    ]]);
-        //обращаемся к сесси и выводим значение
-        dump(session('test'));
-        dump(session('card')[1]['title']);
+        /**работа с cookie*/
+        //Cookie::queue('test-cook','hello ann', 5);//создаем куку
+        //Cookie::queue(Cookie::forget('test-cook'));//удаление куки
+        //dump(Cookie::get('test-cook'));//выводдим куку
+        //dump($request->cookie('test-cook'));//или так выводим
+
+        /**Работа с Кешем*/
+        //помещение в кеш
+        //Cache::put('key','value1',60);//положили в кеш по ключу валуе на 60сек
+        //Cache::put('key','value1')//тоже самое только навсегда положено в кеш
+        //dump(Cache::get('key'));//выводим валуе по ключу
+        //Cache::forget('posts');//удаляем кеш
+        //Cache::pull('posts');//получаем данные и сразу удалим после получения
+        //Cache::flush();/удаление всех данных в кеше
+        //провека есть ли что то в  кеше
 
 
-        //добавляем в массив кард в сессию новый продукт
-        //$request->session()->push('card',['id'=>'3','title'=>'prod 3']);
-
-        //удаление данных из сесии
-        //dump(session()->pull('test'));//вырезал , распечатал удалил
-        //$request->session()->forget('test');//удаление из сесии
-
-        //полная очистка сессии
-        //$request->session()->flush();
-        */
-
-        dump(session()->all());
-
-        $posts = Post::query()->orderBy('id','desc')->get();//получаем посты в обратном порядке
         $title = 'home page';
+        //провека есть ли в кеше посты
+        if (Cache::has('posts')) {
+            //евли есть получаем из кеша посты и кладем в пост переменную
+            $posts = Cache::get('posts');
+        }else{//если нет
+            //выполняем запрос к базе данных и получаем все посты в обратном порядке
+            $posts = Post::query()->orderBy('id', 'desc')->get();
+            //и заносим эти посты в кеш навсегда
+            Cache::put('posts', $posts);
+        }
+
+
+
+       //возвращаем вид хом, и передаем туда тайтл и посты
        return view('home',compact('title','posts'));
     }
 
@@ -56,10 +64,7 @@ class HomeController extends Controller
     }
 
     public function store(Request $request) {
-        /*dump($request->input('title'));
-        dump($request->input('content'));
-        dump($request->input('rubric_id'));*/
-        //dd($request->all());
+
 
         $this->validate($request,
             [
@@ -69,24 +74,6 @@ class HomeController extends Controller
 
             ]);
 
-        /*
-        $rules = [
-            'title' => ['required','min:5','max:25'],
-            'content'=> 'required',
-            'rubric_id'=> 'integer',
-        ];
-
-        $messages = [
-            'title.required' => 'заполните поле тайтла',
-            'title.min' => 'минимум 5 символов',
-            'title.max' => 'максимум 100 сиволов',
-
-            'rubric_id.integer' => 'выбирите рубрику',
-            'content.required'=> 'поле не должно быть пустым',
-
-        ];
-
-        $validator = Validator::make($request->all(),$rules, $messages)->validate();*/
 
         //флеш сообщения в сессии которые показываютсья только один раз
         session()->flash('flash text','данные сохранены!');
