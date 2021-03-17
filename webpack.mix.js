@@ -11,7 +11,24 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
-        //
-    ]);
+//обьеденяем несоклько файлов в один + минифицирование
+mix.styles([
+    'resources/front/css/bootstrap.css',
+    'resources/front/css/main.css'
+    ], 'public/css/styles.css');
+
+// js в один + минифицирование
+mix.scripts([
+    'resources/front/js/bootstrap.js',
+
+],'public/js/scripts.js');
+
+//копируем изображения с папки в папку
+mix.copyDirectory('resources/front/img','public/img')
+
+//запуск микса npm run dev  - не минифицирует
+// или npm run prod - минифицирует
+
+//обновление страницы при изминениях в коде
+mix.browserSync('localhost/laravel/public/');// + команда npm run watch
+
