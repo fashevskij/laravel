@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.80.0">
-    <title>@section('title') my site @show</title>
+    <title>@section('title') Page: @show</title>
 
     <script src="{{@asset('js/scripts.js')}}" ></script>
 

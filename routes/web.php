@@ -22,10 +22,10 @@ Route::post('/store',[HomeController::class, 'store'])->name('posts.store');
 use App\Http\Controllers\PageController;
 Route::get('/about',[PageController::class, 'show'])->name('page.about');
 
+use App\Http\Controllers\ContactController;
+//Route::get('/send', [ContactController::class, 'send']);
 
-
-
-
+Route::match(['get','post'],'/send',[ContactController::class, 'send'])->name('send');
 
 
 

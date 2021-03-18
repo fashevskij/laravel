@@ -4,9 +4,9 @@
 
 <div class="m-2">
 
-    @if (session('flash text'))
+    @if (session('flashText'))
         <div class="alert alert-danger">
-            {{session('flash text')}}
+            {{session('flashText')}}
         </div>
 
     @endif
