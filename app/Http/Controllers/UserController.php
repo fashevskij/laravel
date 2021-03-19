@@ -23,13 +23,23 @@ class UserController extends Controller
             'name'=>'required',
             'email'=> ['required','email','unique:users,email'],
             'password'=>['required','confirmed'],
+            'avatar' => ['nullable','image']
         ]);
+        if ($request->hasFile('avatar')){
+            $folder = date('Y-m-d');//переменная будет равна дате сегодня
+        //для сохранения загруженой картинки используем file('название поля')->store('куда сохран)
+        $avatar = $request->file('avatar')->store("images/{$folder}");
+    }
+
+
+
         //Создаем запрос к базе данных на внесение юзера
        $user = User::query()->create([
            'name'=> $request->name,
             'email'=> $request->email,
             'password'=> Hash::make($request->password),//хешируем пароль перед внесением
-        ]);
+           'avatar' => $avatar ?? null//передаем путь к картинке в базу данных или null если ее нет
+       ]);
        //выводим флеш сообщение после регистрации
        session()->flash('flashText','Пользователь успешено зарегестрирован');
        //выполняем вход на сайт после регистрации
@@ -50,7 +60,10 @@ class UserController extends Controller
         $request->validate([
             'email'=> ['required','email'],
             'password'=>['required'],
+
         ]);
+
+
         //если прошли валидацию
         //проверяем наличие введенного логина и пароля в бд
         if (Auth::attempt([

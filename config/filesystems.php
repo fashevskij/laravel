@@ -12,7 +12,7 @@ return [
     | based disks are available to your application. Just store away!
     |
     */
-
+    /**ввсе что мы сохраняем в локальное хранилище */
     'default' => env('FILESYSTEM_DRIVER', 'local'),
 
     /*

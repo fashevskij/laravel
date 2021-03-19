@@ -16,10 +16,12 @@ class User extends Authenticatable
      *
      * @var array
      */
+    //Свойство $fillable указывает, какие поля должны быть доступны при массовом заполнении
     protected $fillable = [
         'name',
         'email',
         'password',
+        'avatar'
     ];
 
     /**

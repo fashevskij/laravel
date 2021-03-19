@@ -62,6 +62,9 @@
 
             @auth
                 <a href="#" class="text-white">{{auth()->user()->name}}</a>
+                @if(auth()->user()->avatar)
+                <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="" height="40px">
+                @endif
                 <a href="{{route('logout')}}" class="text-white">logout</a>
             @endauth
 
