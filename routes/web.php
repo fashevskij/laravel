@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
 //для подключение контроллеров!!
 use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -28,16 +29,27 @@ use App\Http\Controllers\ContactController;
 Route::match(['get','post'],'/send',[ContactController::class, 'send'])->name('send');
 
 use \App\Http\Controllers\UserController;
-//маршруты для регистрации пользователя
-Route::get('/registration', [UserController::class,'registration'])->name('registration');
-Route::post('/registration', [UserController::class,'store'])->name('registration.store');
-//маршруты для авторизации пользователя
-Route::get('/login', [UserController::class,'loginForm'])->name('login.form');
-Route::post('/login', [UserController::class,'login'])->name('login.store');
-Route::get('/logout', [UserController::class,'logout'])->name('logout');
+//создаем группу маршрутов с одним посредником (гость - для него доступрны урл регистрации и авторизации)
+Route::group(['middleware'=>'guest'] , function (){
+    //маршруты для регистрации пользователя
+    Route::get('/registration', [UserController::class,'registration'])->name('registration');
+    Route::post('/registration', [UserController::class,'store'])->name('registration.store');
+
+    //маршруты для авторизации пользователя
+    Route::get('/login', [UserController::class,'loginForm'])->name('login.form');
+    Route::post('/login', [UserController::class,'login'])->name('login.store');
+});
 
 
-Route::get('/admin',[\App\Http\Controllers\Admin\MainController::class, 'index'])->name('admin');
+//для авторизированого пользователя доступ к выходу через посредника
+Route::get('/logout', [UserController::class,'logout'])->name('logout')->middleware('auth');
+
+//middleware('admin') - выполняеться посредник при переходе на указаный маршрут
+Route::group(['middleware' => 'admin'], function (){
+
+    Route::get('/admin',[\App\Http\Controllers\Admin\MainController::class, 'index'])->name('admin');
+});
+
 
 
 //Route::fallback() перенаправление всех зпросов для которых нет правил на нужный мне
