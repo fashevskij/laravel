@@ -27,7 +27,17 @@ use App\Http\Controllers\ContactController;
 
 Route::match(['get','post'],'/send',[ContactController::class, 'send'])->name('send');
 
+use \App\Http\Controllers\UserController;
+//маршруты для регистрации пользователя
+Route::get('/registration', [UserController::class,'registration'])->name('registration');
+Route::post('/registration', [UserController::class,'store'])->name('registration.store');
+//маршруты для авторизации пользователя
+Route::get('/login', [UserController::class,'loginForm'])->name('login.form');
+Route::post('/login', [UserController::class,'login'])->name('login.store');
+Route::get('/logout', [UserController::class,'logout'])->name('logout');
 
+
+Route::get('/admin',[\App\Http\Controllers\Admin\MainController::class, 'index'])->name('admin');
 
 
 //Route::fallback() перенаправление всех зпросов для которых нет правил на нужный мне
