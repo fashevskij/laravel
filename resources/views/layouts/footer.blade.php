@@ -4,6 +4,12 @@
         <p class="float-end mb-1">
             &copy; {{date('Y M d')}}
         </p>
+        {{--получаем из AppServiceProvider рубрики, которые доступны на каждой странице
+        и более подключения для каждого вида не нужно
+        --}}
+        @foreach($rubrics as $rubric)
+        <p>{{$rubric->title}}</p>
+        @endforeach
         <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
         <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.0/getting-started/introduction/">getting started guide</a>.</p>
     </div>

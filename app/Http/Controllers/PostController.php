@@ -40,7 +40,7 @@ class PostController extends Controller
      *
      * param  \Illuminate\Http\Request  $request
      * return \Illuminate\Http\Response
-     *
+     * @param Request $request
      */
     public function store(Request $request)
     {
@@ -52,6 +52,8 @@ class PostController extends Controller
      *
      * param  int  $id
      * return \Illuminate\Http\Response
+     * @param $id
+     * @return string
      */
     public function show($id)
     {
@@ -63,6 +65,8 @@ class PostController extends Controller
      *
      * param  int  $id
      * return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit($id)
     {
@@ -75,6 +79,8 @@ class PostController extends Controller
      * param  \Illuminate\Http\Request  $request
      * param  int  $id
      * return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
      */
     public function update(Request $request, $id)
     {
@@ -87,6 +93,7 @@ class PostController extends Controller
      *
      * param  int  $id
      * return \Illuminate\Http\Response
+     * @param $id
      */
     public function destroy($id)
     {

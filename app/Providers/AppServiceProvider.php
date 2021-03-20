@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Rubric;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,5 +30,11 @@ class AppServiceProvider extends ServiceProvider
        DB::listen(function ($query){
          // dump($query->sql);
        });
+
+       //регистрация view composer ()
+        //Rubric::all() - все рубрики под именем rubrics будут доступны для шаблона layouts.footer
+        view()->composer('layouts.footer', function ($view){
+           $view->with('rubrics', Rubric::all());
+        });
     }
 }
