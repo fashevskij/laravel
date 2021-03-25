@@ -43,7 +43,8 @@ class HomeController extends Controller
             $title = 'home page';
             //выполняем запрос к базе данных и получаем все посты в обратном порядке c количеством постов на странице 3
             //paginate('3') сколько постов мы покажем на странице
-            $posts = Post::query()->orderBy('id', 'desc')->paginate('6');
+            //orderBy('что ссортируем', 'desc-(в обратном порядке)')
+            $posts = Post::query()->orderBy('created_at', 'desc')->paginate('6');
             //возвращаем вид хом, и передаем туда тайтл и посты
             return view('home',compact('title','posts'));
     }

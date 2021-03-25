@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -49,5 +50,22 @@ class Post extends Model
 
     public function  getPostDate() {
        return Carbon::parse($this->created_at)->diffForHumans();
+    }
+
+    //мутатор нечто вроде сеттера (cработает перед занесением в базу данных)
+    //обязательное название setНазваниеПоляAttribute
+    //setTitleAttribute - перехват тайтла до внесения поста
+    public function setTitleAttribute($value){
+        //dd($value);
+        //присваеваем атрибуту новое значение ,каждое слово с большой буквы
+        //Str::title() - хелперы для работы с строками ларавел!!
+        $this->attributes['title'] = Str::title($value);
+    }
+
+
+    //метод Accessor работает как геттер (перехват данных перед выводом с базы данных на страницу)
+    public function getTitleAttribute($value){
+        //возвращаем тайтл с базы данных и приводим все буквы к верхнему регистру
+        return $this->attributes['title'] = Str::upper($value);
     }
 }
