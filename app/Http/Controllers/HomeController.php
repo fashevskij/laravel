@@ -39,29 +39,20 @@ class HomeController extends Controller
         //провека есть ли что то в  кеше
 
 
-        $title = 'home page';
-        //провека есть ли в кеше посты
-        if (Cache::has('posts')) {
-            //евли есть получаем из кеша посты и кладем в пост переменную
-            $posts = Cache::get('posts');
-        }else{//если нет
-            //выполняем запрос к базе данных и получаем все посты в обратном порядке
-            $posts = Post::query()->orderBy('id', 'desc')->get();
-            //и заносим эти посты в кеш навсегда
-            Cache::put('posts', $posts);
+
+            $title = 'home page';
+            //выполняем запрос к базе данных и получаем все посты в обратном порядке c количеством постов на странице 3
+            //paginate('3') сколько постов мы покажем на странице
+            $posts = Post::query()->orderBy('id', 'desc')->paginate('3');
+            //возвращаем вид хом, и передаем туда тайтл и посты
+            return view('home',compact('title','posts'));
+    }
+
+        public function create() {
+            $title = 'create post';
+            $rubrics = Rubric::query()->pluck('title','id')->all();
+            return view('create',compact('title','rubrics'));
         }
-
-
-
-       //возвращаем вид хом, и передаем туда тайтл и посты
-       return view('home',compact('title','posts'));
-    }
-
-    public function create() {
-        $title = 'create post';
-        $rubrics = Rubric::query()->pluck('title','id')->all();
-        return view('create',compact('title','rubrics'));
-    }
 
     public function store(Request $request) {
 

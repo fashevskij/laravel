@@ -45,7 +45,16 @@
                     </div>
                 </div>
                 @endforeach
+                {{--вывод пагинации на страницу
+                onEachSide(3) - показывает 3 до и 3 после страници!
 
+                для того чтобы не использовать будстрап пагинацию нужно исп команду
+                php artisan vendor:publish --tag=laravel-pagination
+                и в папке vendor.pagination выбрать шаблон пагинации или создать свой
+                --}}
+                <div class="col col-md-12">
+                    {{$posts->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
+                </div>
             </div>
         </div>
     </div>
