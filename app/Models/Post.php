@@ -5,9 +5,13 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 class Post extends Model
-{   /*  //для связывания этой модели и таблицы
+{
+    use HasFactory, Notifiable;
+
+    /*  //для связывания этой модели и таблицы
     protected $table = 'posts';
         //должно быть поле с ключем и оно должно быть целочисленным чтобы связать его с моделью можно указать
     protected $primaryKey = 'post_id';
@@ -30,7 +34,11 @@ class Post extends Model
     //данная запись работает как 1к1 и 1 к многим
 
     protected  $fillable = ['title','content','rubric_id'];
-   public function rubric() {
+
+
+
+
+    public function rubric() {
         return $this->belongsTo(Rubric::class);
     }
 

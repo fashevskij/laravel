@@ -53,7 +53,7 @@
                 и в папке vendor.pagination выбрать шаблон пагинации или создать свой
                 --}}
                 <div class="col col-md-12">
-                    {{$posts->onEachSide(1)->links('vendor.pagination.bootstrap-4')}}
+                    {{$posts->onEachSide(2)->links('vendor.pagination.bootstrap-4')}}
                 </div>
             </div>
         </div>
