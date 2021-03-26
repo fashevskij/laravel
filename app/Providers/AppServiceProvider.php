@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Rubric;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -30,7 +31,10 @@ class AppServiceProvider extends ServiceProvider
 
         //для просмотра запросов (что его формирует)
        DB::listen(function ($query){
-         // dump($query->sql);
+         //записываем в лог файл sql запросы
+           //Log::info($query->sql);
+           //записываем sql запросы в отдельный канал (sqllogs) смотреть logging.php
+           Log::channel('sqllogs')->info($query->sql);
        });
 
        //регистрация view composer ()
